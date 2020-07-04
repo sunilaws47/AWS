@@ -1,8 +1,3 @@
-#Author: Nivedha B L 
-#put: Security group name and vpc id 
-#Description: 
-#It takes security group name and vpc id to create/modify the inbound rule.
-#if sg already exists, it modifies the rule, else it creates new sg and adds the given rule.
 
 ---
 - hosts: localhost
@@ -10,8 +5,8 @@
   tasks:
   - name: sg with inbound rule
     ec2_group:
-      aws_access_key: AKIAYMHRXM6TTQQ4SVMA
-      aws_secret_key: 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
+      aws_access_key: 
+      aws_secret_key: 
       name: "{{ security_group_name }}"
       description: sg with new rules
       state: present
