@@ -1,0 +1,21 @@
+- hosts: localhost
+  become: true
+  tasks:
+  - name: sg with outbound rule
+    ec2_group:
+      aws_access_key: AKIAYMHRXM6TTQQ4SVMA
+      aws_secret_key: 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
+      name: "{{ security_group_name }}"
+      description: sg with new rules
+      state: present
+      vpc_id: "{{ vpc_id }}"
+      region: ap-south-1
+      rules_egress:
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0./0
+        - proto: tcp
+          from_port: 8080
+          to_port: 8080
+          cidr_ip: 0.0.0.0./0

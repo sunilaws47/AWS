@@ -1,0 +1,61 @@
+---
+- hosts: localhost
+  become: true
+  tasks:
+  - name: to gather info about volume
+    ec2_vol_info:
+      region: ap-south-1
+      filters:
+        "tag:Name" : Server
+      validate_certs: no
+    register: vol
+  - debug: var=vol
+
+  - set_fact: 
+      vol_id: "{{ item.id }}"
+      ins_id: "{{ item.attachment_set.instance_id}}"
+    with_items:
+    - "{{ vol.volumes }}"
+    register: vol
+
+  - debug:
+      msg: "{{item}}"
+    with_items:
+    - "{{vol_id}}"
+    - "{{ins_id }}"
+  - name: stopping instance
+    ec2:
+      instance_ids: "{{ins_id}}"
+      region: "ap-south-1"
+      state: stopped
+      validate_certs: no
+
+  - name: detaching volume from instance
+    ec2_vol:
+      id: "{{vol_id}}"
+      instance: None
+      region: ap-south-1
+
+  - name: deleting volume
+    ec2_vol:
+      id: "{{vol_id}}"
+      state: absent
+      region: "ap-south-1"
+
+  - name: wait one  mint after removing Volume from EC2-instace
+    pause:
+      prompt: wait for 60 seconds after removing volume
+      seconds: 60
+
+  - name: starting instance
+    ec2:
+      instance_ids: "{{ins_id}}"
+      region: "ap-south-1"
+      state: running
+      validate_certs: no
+    register: ec2_start
+
+  - debug: msg="EC2 instance ==> {{ins_id}} has been started successfully after removing volume."
+    when: ec2_start is not failed
+
+

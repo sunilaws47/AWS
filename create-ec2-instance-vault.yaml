@@ -1,0 +1,23 @@
+- name: ec2 instance creation with playbook
+  hosts: localhost
+  become: true
+  connection: local
+  vars_files:
+    - myaws_key.yaml 
+  tasks:
+  - name: launching ec2
+    ec2:
+     aws_access_key: "{{access_key}}"
+     aws_secret_key: "{{secret_key}}"
+     instance_type: t2.micro
+     key_name: My-new-AWS-Linux-key
+     image: ami-052c08d70def0ac62
+     region: ap-south-1
+     group: My-Security-Group
+     count: 1
+     vpc_subnet_id: subnet-9e4f75f6
+     wait: yes
+     assign_public_ip: yes
+     instance_tags:
+       ansible-testing: testing-server
+
