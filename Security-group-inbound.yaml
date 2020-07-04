@@ -2,11 +2,13 @@
 ---
 - hosts: localhost
   become: true
+  vars_files:
+    - myaws_key.yaml 
   tasks:
   - name: sg with inbound rule
     ec2_group:
-      aws_access_key: 
-      aws_secret_key: 
+      aws_access_key: "{{access_key}}"
+      aws_secret_key: "{{secret_key}}"
       name: "{{ security_group_name }}"
       description: sg with new rules
       state: present
