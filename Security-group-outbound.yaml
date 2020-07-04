@@ -3,8 +3,8 @@
   tasks:
   - name: sg with outbound rule
     ec2_group:
-      aws_access_key: AKIAYMHRXM6TTQQ4SVMA
-      aws_secret_key: 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
+      aws_access_key:
+      aws_secret_key: 
       name: "{{ security_group_name }}"
       description: sg with new rules
       state: present
