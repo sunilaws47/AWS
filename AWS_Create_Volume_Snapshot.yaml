@@ -1,0 +1,20 @@
+- name: playbook for creation of ebs snapshot
+  hosts: localhost
+  vars_files:
+    - myaws_key.yaml
+  vars:
+   region: ap-south-1
+   instanceid: xyz
+   devicename: xyz
+   volumeid: xyz
+  tasks:
+  - name: creating snapshot
+    ec2_snapshot:
+      aws_access_key: "{{access_key}}"
+      aws_secret_key: "{{secret_key}}"
+      region: "{{ region }}"
+ #    instance_id: "{{ instanceid }}"
+ #     device_name: "{{ devicename }}"
+      volume_id: "{{ volumeid }}"
+    register: snap
+   

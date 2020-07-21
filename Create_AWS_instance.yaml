@@ -1,0 +1,30 @@
+- name: ec2 instance creation with playbook
+  hosts: localhost
+  become: true
+  vars:
+    access_key: AKIAYMHRXM6TZTMZJVOR
+    secret_key: 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
+    ins_type: t2.micro
+    k_name: My-new-AWS-Linux-key
+    ami: ami-052c08d70def0ac62
+    regi: ap-south-1
+    sec_group: My-Security-Group
+    ins_conunt: 1
+    vpc_subnet: subnet-9e4f75f6
+    public_ip: yes 
+  connection: local
+  tasks:
+  - name: launching ec2
+    ec2:
+     aws_access_key: "{{access_key}}"
+     aws_secret_key: "{{secret_key}}"
+     instance_type: "{{ins_type}}"
+     key_name: "{{k_name}}"
+     image: "{{ami}}"
+     region: "{{regi}}"
+     group: "{{sec_group}}"
+     count: "{{ins_conunt}}"
+     vpc_subnet_id: "{{vpc_subnet}}"
+     wait: yes
+     assign_public_ip: "{{public_ip}}"
+

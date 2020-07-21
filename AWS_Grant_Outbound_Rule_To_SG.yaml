@@ -1,0 +1,29 @@
+- hosts: localhost
+  become: true
+  vars_files:
+    - myaws_key.yaml
+  vars:
+    security_group_name: testing_SG
+    vpc_id: vpc-72312c1a
+    regi: ap-south-1
+    port1: 80
+    port2: 8080
+  tasks:
+  - name: sg with outbound rule
+    ec2_group:
+      aws_access_key: "{{access_key}}"
+      aws_secret_key: "{{secret_key}}"
+      name: "{{ security_group_name }}"
+      description: sg with new rules
+      state: present
+      vpc_id: "{{ vpc_id }}"
+      region: "{{ regi }}"
+      rules_egress:
+        - proto: tcp
+          from_port: "{{ port1 }}"
+          to_port: "{{ port1 }}"
+          cidr_ip: 0.0.0.0./0
+        - proto: tcp
+          from_port: "{{ port2 }}"
+          to_port: "{{ port2 }}"
+          cidr_ip: 0.0.0.0./0

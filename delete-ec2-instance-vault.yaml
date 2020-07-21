@@ -1,0 +1,13 @@
+- name: Terminate instances with playbook
+  hosts: localhost
+  connection: local
+  vars_files:
+    - myaws_key.yaml
+  tasks:
+  - name: Terminate instances
+    ec2:
+     aws_access_key: "{{access_key}}"
+     aws_secret_key: "{{secret_key}}"
+     region: ap-south-1
+     state: 'absent'
+     instance_ids: "{{instance}}"

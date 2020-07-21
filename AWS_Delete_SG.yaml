@@ -1,0 +1,15 @@
+- hosts: localhost
+  become: true
+  vars_files:
+    - myaws_key.yaml
+  vars:
+    regi: ap-south-1
+    sg_id: xyz
+  tasks:
+  - name: sg with outbound rule
+    ec2_group:
+      aws_access_key: "{{access_key}}"
+      aws_secret_key: "{{secret_key}}"
+      group_id: "{{ sg_id }}"
+      state: absent
+      region: "{{ regi }}"

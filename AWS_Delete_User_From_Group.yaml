@@ -1,0 +1,14 @@
+- hosts: localhost
+  become: true
+  vars_files:
+    - myaws_key.yaml
+  tasks:
+  - name: delete user from iam
+    iam:
+      aws_access_key: "{{access_key}}"
+      aws_secret_key: "{{secret_key}}"
+      iam_type: user
+      groups: "{{ group_name }}"
+      name: "{{ user_name }}"
+      access_key_state: remove
+      state: absent
